@@ -45,9 +45,6 @@ to set the correct CORS headers.  It accepts a cors.Options struct for configura
 */
 func Middleware(config Config) gin.HandlerFunc {
 
-	// Convert the list into a slice of strings.  This happens just once for the life of the server
-	validOrigins := strings.Split(config.Origins, ", ")
-
 	// Set default value for headers
 	if config.Headers == "" {
 		config.Headers = "Cache-Control, Pragma, Origin, Authorization, Content-Type"
@@ -63,6 +60,9 @@ func Middleware(config Config) gin.HandlerFunc {
 
 	// Create the Middleware function
 	return func(context *gin.Context) {
+
+		// Convert the list into a slice of strings.  This happens just once for the life of the server
+		validOrigins := strings.Split(config.Origins, ", ")
 
 		// Read the Origin header from the HTTP request
 		currentOrigin := context.Request.Header.Get("Origin")
